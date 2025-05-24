@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROFILE - PHÚ TÀI OFFICIAL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head><body>
+	<!-- Loading overlay -->
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <p style="margin-top: 12px;">Loading...</p>
+</div>
+    <div class="page page--main">
+        <div class="box">
+            <img class="box--avt" src="https://img.upanh.tv/2025/05/20/f5a31b8b43609b08ec71c269a0086fe8.jpg" alt="Avatar">
+            <div class="box--heading">
+                <h3><span class="rainbow-text">PHÚ TÀI</span> <i class='bx bxs-badge-check' style='color:#4fc3f7'></i></h3>
+                <br>
+                <h2 class="typewriter" id="typewriter-text"></h2>
+                <br>
+                <div class="box--paragraph">
+            </div>
+        <div class="contactme__btn">
+            <a href="https://discord.gg/YVAact85mz"><i class="bx bxl-discord-alt"></i></a>
+            <a href="https://youtube.com/@thienthanhsamp_official"><i class='bx bxl-youtube'></i></a>
+        </div>
+    </div>
+</div>
+
+<audio id="bg-music" src="https://files.catbox.moe/hidqrh.mp3" loop></audio>
+<div id="music-trigger"></div>
+<div id="fps-meter">FPS : --</div>
+<div class="mascot">
+    <img src="https://img.upanh.tv/2025/05/20/f5a31b43609b08ec71c269a0086fe8.jpg" alt="Mascot">
+    <div class="speech">Chào, Bạn Cần Mình Hỗ Trợ Gì?</div>
+</div>
+<div class="menu-icon" onclick="toggleMenu()">☰</div>
+<nav id="side-menu">
+  <a href="index.html">Home</a>
+  <a href="index.html">Profile</a>
+  <a href="index.html">Youtube</a>
+  <a href="#" onclick="toggleSubMenu()">Download</a>
+  <div class="submenu" id="submenu">
+    <a href="game.html">Code</a>
+    <a href="mods.html">Code</a>
+  </div>
+</nav>
+
+<script>
+    const typewriter = document.getElementById("typewriter-text");
+    const phrases = [
+        "ENGLISH. ",
+        "WELCOME TO WEBSITE ! ",
+        "I'M A DEVELOPER, PHU TAI. ! ",
+        "VIETNAMESE. ",
+        "CHÀO MỪNG BẠN ĐẾN VỚI WEBSITE ! ",
+        "TÔI LÀ NHÀ PHÁT TRIỂN, PHÚ TÀI. ! ",
+    ];
+    let i = 0, j = 0;
+    let currentPhrase = [];
+    let isDeleting = false;
+
+    function loop() {
+        typewriter.innerHTML = currentPhrase.join("");
+
+        if (!isDeleting && j <= phrases[i].length) {
+            currentPhrase.push(phrases[i][j]);
+            j++;
+        }
+
+        if (isDeleting && j > 0) {
+            currentPhrase.pop();
+            j--;
+        }
+
+        if (j === phrases[i].length) {
+            isDeleting = true;
+            setTimeout(loop, 1500);
+            return;
+        }
+
+        if (isDeleting && j === 0) {
+            isDeleting = false;
+            i = (i + 1) % phrases.length;
+        }
+
+        const speed = isDeleting ? 50 : 100;
+        setTimeout(loop, speed);
+    }
+    loop();
+
+    const music = document.getElementById("bg-music");
+    const trigger = document.getElementById("music-trigger");
+
+    trigger.addEventListener("click", () => {
+        music.play().catch(err => console.log("Music failed:", err));
+        trigger.style.display = "none";
+    });
+</script>
+<script>
+let fpsDisplay = document.getElementById("fps-meter");
+let lastFrameTime = performance.now();
+let frames = 0;
+
+function fpsLoop(now) {
+    frames++;
+    if (now - lastFrameTime >= 1000) {
+        fpsDisplay.textContent = `FPS: ${frames}`;
+        frames = 0;
+        lastFrameTime = now;
+    }
+    requestAnimationFrame(fpsLoop);
+}
+requestAnimationFrame(fpsLoop);
+</script>
+<script>
+const paragraph = document.querySelector('.box--paragraph');
+
+document.addEventListener('mousemove', (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 10;
+    const y = (e.clientY / window.innerHeight - 0.5) * 10;
+    paragraph.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+});
+</script>
+<script>
+function animateSkills() {
+  const fills = document.querySelectorAll('.fill');
+  fills.forEach(fill => {
+    const target = parseInt(fill.getAttribute('data-percent'));
+    fill.style.width = target + "%";
+
+    const percentText = fill.parentElement.previousElementSibling.querySelector(".percent");
+    let current = 0;
+    const interval = setInterval(() => {
+      if (current >= target) {
+        clearInterval(interval);
+      } else {
+        current++;
+        percentText.textContent = current + "%";
+      }
+    }, 40); 
+  });
+}
+
+window.addEventListener("load", animateSkills);
+</script>
+<script>
+document.addEventListener("click", function(e) {
+    const flower = document.createElement("div");
+    flower.classList.add("sakura");
+    flower.style.left = `${e.clientX - 10}px`;
+    flower.style.top = `${e.clientY - 10}px`;
+    document.body.appendChild(flower);
+
+    setTimeout(() => flower.remove(), 3000); 
+});
+</script>
+<script>
+function toggleMenu() {
+  const menu = document.getElementById("side-menu");
+  menu.style.left = (menu.style.left === "0px") ? "-250px" : "0px";
+}
+function toggleSubMenu() {
+  const submenu = document.getElementById("submenu");
+  submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+}
+</script>
+<script>
+window.addEventListener("load", function () {
+  const loader = document.getElementById("loading-overlay");
+  loader.style.opacity = 0;
+  setTimeout(() => loader.style.display = "none", 500);
+});
+</script>
+
+</body></html><style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        user-select: none;
+        scrollbar-width: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+        color-scheme: light dark;
+        font-family: "IBM Plex Sans";
+    }
+    
+    body {
+        background-image: url('https://img.upanh.tv/2025/05/20/pngtree-street-full-of-pink-blossoms-covered-sidewalk-in-a-city-picture-image_2663064.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .page {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .page--main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .box {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .box--avt {
+    width: 3rem;
+    border-radius: 50%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+    .box--avt:hover {
+    transform: scale(1.1) rotate(3deg);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+    .box--paragraph {
+  font-family: "Lora", serif;
+  color: white;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+    .box--contactme {
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+    grid-column: span 2;
+    gap: 1rem;
+    margin-top: 2rem;
+    }
+    
+    .box--contactme h2 {
+    color: #f8d0e7; 
+    font-weight: bold;
+}
+    
+    .contactme__btn {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  gap: 2rem; 
+  margin-top: 1rem;
+}
+
+    .contactme__btn a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        font-size: 2rem;
+        color: white;
+        text-decoration: none;
+        transition: all .25s ease;
+    }
+
+    .contactme__btn a:hover {
+        color: #87cefa;
+    }
+    
+    .contactme__btn a:nth-child(1) i {
+    color: #4fc3f7; 
+}
+
+.contactme__btn a:nth-child(2) i {
+    color: #ff3d00; 
+}
+
+.contactme__btn a i {
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.contactme__btn a:hover i {
+    transform: scale(1.2) rotate(5deg);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+.typewriter {
+    color: white;
+    font-weight: bold;
+    display: inline;
+}
+
+.typewriter::after {
+    content: "|";
+    animation: blink 1s infinite;
+    color: white;
+    font-weight: normal;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+    #music-trigger {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    .rainbow-text {
+        font-weight: bold;
+        background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 400%;
+        animation: rainbow 5s linear infinite;
+    }
+
+    @keyframes rainbow {
+        0% { background-position: 0%; }
+        100% { background-position: 100%; }
+    }
+    
+    #loading-overlay {
+  position: fixed;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-family: 'IBM Plex Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid rgba(255, 255, 255, 0.2);
+  border-top: 6px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+    
+    .footer-credit {
+  text-align: center;
+  margin-top: 1rem;
+  font-family: "Lora";
+  color: white;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.footer-credit .underline {
+  text-decoration: underline;
+}
+    
+    .mascot {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    z-index: 999;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.2rem; 
+}
+
+.mascot img {
+    height: 60px;
+    display: block;
+}
+
+.mascot .speech {
+    background: white;
+    color: black;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    margin-left: -5px; 
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-5px); }
+}
+
+#fps-meter {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    font-family: "IBM Plex Sans";
+    font-size: 1rem;
+    font-weight: bold;
+    animation: rainbowText 2s linear infinite;
+}
+
+@keyframes rainbowText {
+    0%   { color: red; }
+    16%  { color: orange; }
+    33%  { color: yellow; }
+    50%  { color: green; }
+    66%  { color: blue; }
+    83%  { color: indigo; }
+    100% { color: violet; }
+}
+
+.sakura {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: url('https://i.imgur.com/R9XUjfF.png') no-repeat center;
+    background-size: contain;
+    pointer-events: none;
+    animation: fall 3s linear forwards;
+    z-index: 9999;
+}
+
+@keyframes fall {
+    0% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(100px) rotate(360deg);
+    }
+}
+</style>
+<style>
+#side-menu a {
+  font-family: 'IBM Plex Sans';
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+.menu-icon {
+  font-size: 20px;
+  cursor: pointer;
+  position: fixed;
+  top: 5px;
+  left: 10px;
+  z-index: 999;
+  background: linear-gradient(270deg, red, orange, yellow, green, cyan, blue, violet, red);
+  background-size: 1600% 1600%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbow 4s linear infinite;
+}
+
+#side-menu {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 200px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(5px);
+  padding-top: 60px;
+  transition: 0.3s ease;
+  z-index: 998;
+}
+#side-menu a {
+  display: block;
+  padding: 12px 20px;
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+}
+#side-menu a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.submenu {
+  padding-left: 30px;
+  display: none;
+}
+</style>
