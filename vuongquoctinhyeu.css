@@ -1,0 +1,516 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+body {
+  overflow: hidden;
+  font-family: "Dancing Script", cursive;
+  background-color: black;
+  height: 100vh;
+}
+
+/* Overlay thông báo xoay màn hình */
+.rotate-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  font-family: "Montserrat", sans-serif;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  background-image: url("https://www.transparenttextures.com/patterns/subtle-white-feathers.png");
+  background-size: cover;
+}
+
+.rotate-overlay.hidden {
+  display: none;
+}
+
+.rotate-message {
+  text-align: center;
+  padding: 15px 30px; /* Giảm padding */
+  background: linear-gradient(135deg, #ff6f61, #e63946);
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  max-width: 85%;
+}
+
+.rotate-message h1 {
+  font-size: 1.8em; /* Giảm kích thước chữ */
+  color: #fff;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+  margin-bottom: 15px;
+}
+
+.rotate-message p {
+  font-size: 1em; /* Giảm kích thước chữ */
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  line-height: 1.3;
+}
+
+.start-screen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: linear-gradient(to bottom right, #ff6f61, #ffb6c1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.start-screen h1 {
+  font-size: 3em;
+  color: white;
+  text-shadow: 0 0 15px #e63946;
+  margin-bottom: 20px;
+  font-family: 'Dancing Script', cursive;
+}
+
+#start-btn {
+  padding: 15px 30px;
+  font-size: 1.2em;
+  background: white;
+  color: #e63946;
+  border-radius: 12px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+
+#start-btn:hover {
+  background: #ffeaea;
+}
+
+/* Ẩn overlay trên PC */
+@media only screen and (min-width: 1024px) {
+  .rotate-overlay {
+    display: none;
+  }
+}
+
+.scene-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.8));
+}
+
+/* Canvas */
+#canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  filter: blur(0.5px) brightness(0.9);
+}
+
+/* Bảng nói chuyện (góc trái) */
+.chat-box {
+  position: absolute;
+  top: 10px; /* Giảm khoảng cách từ trên */
+  left: 10px; /* Giảm khoảng cách từ trái */
+  width: 40vw; /* Giảm chiều rộng tương đối */
+  max-width: 250px; /* Giới hạn tối đa */
+  border-radius: 15px;
+  z-index: 10;
+  backdrop-filter: blur(5px);
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  padding: 8px; /* Giảm padding */
+  border-bottom: 1px solid rgba(255, 111, 97, 0.5);
+}
+
+.chat-header img {
+  width: 30px; /* Giảm kích thước ảnh */
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 8px;
+  border: 2px solid #ff6f61; /* Viền mỏng hơn */
+  box-shadow: 0 0 5px #ff6f61; /* Bóng nhỏ hơn */
+}
+
+#narrator-name,
+#path-narrator-name {
+  font-size: 1em; /* Giảm kích thước chữ */
+  color: #ff6f61;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  padding: 3px 8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.chat-message {
+  position: absolute;
+  top: 40px; /* Giảm khoảng cách từ header */
+  left: 40px;
+  padding: 8px; /* Giảm padding */
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 0 20px 20px 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  max-width: 80%; /* Giảm chiều rộng tối đa */
+}
+
+#chat-text {
+  font-size: 0.9em; /* Giảm kích thước chữ */
+  color: #1a2d1e;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  line-height: 1.3;
+  opacity: 1;
+  display: inline-block;
+  white-space: pre-wrap;
+}
+
+#chat-text.visible {
+  opacity: 1;
+}
+
+/* Bảng thông báo khi vào con đường */
+.path-message-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, rgba(255, 204, 203, 0.95), rgba(240, 230, 255, 0.9));
+  padding: 20px 30px; /* Giảm padding */
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.5);
+  text-align: center;
+  max-width: 90vw; /* Giảm chiều rộng tối đa */
+  z-index: 20;
+  animation: popUp 0.6s ease-out;
+  border: 3px solid #ff6f61;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  background-image: url("https://www.transparenttextures.com/patterns/subtle-white-feathers.png");
+  background-size: cover;
+}
+
+.path-message-box.hidden {
+  display: none;
+}
+
+.message-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px; /* Giảm khoảng cách */
+}
+
+.message-header img {
+  width: 40px; /* Giảm kích thước ảnh */
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 3px solid #ff6f61;
+  box-shadow: 0 0 10px #ff6f61, inset 0 0 3px rgba(255, 255, 255, 0.8);
+  transition: transform 0.3s ease;
+}
+
+.message-header img:hover {
+  transform: scale(1.1);
+}
+
+#path-narrator-name {
+  font-size: 1.2em; /* Giảm kích thước chữ */
+  color: #ff0073;
+  font-family: "Dancing Script", cursive;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.3);
+  padding: 3px 10px;
+  border-radius: 15px;
+}
+
+#path-message-text {
+  font-size: 1.2em; /* Giảm kích thước chữ */
+  color: #ffffff;
+  margin: 0 0 20px 0; /* Giảm khoảng cách */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.message-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Giảm khoảng cách giữa nút */
+  flex-wrap: wrap;
+}
+
+#continue-btn,
+#back-btn {
+  padding: 10px 30px; /* Giảm kích thước nút */
+  background: linear-gradient(145deg, #ff6f61, #e63946);
+  border: 2px solid #ff9991; /* Viền mỏng hơn */
+  border-radius: 15px;
+  font-size: 1em; /* Giảm kích thước chữ */
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 111, 97, 0.7), inset 0 1px 3px rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  font-family: "Arial", sans-serif;
+  font-weight: 700;
+  position: relative;
+  backdrop-filter: blur(1px);
+  background-image: url("https://www.transparenttextures.com/patterns/subtle-white-feathers.png");
+  background-size: cover;
+}
+
+#continue-btn:hover,
+#back-btn:hover {
+  background: linear-gradient(145deg, #e63946, #cc2e3b);
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 111, 97, 0.9), inset 0 1px 3px rgba(255, 255, 255, 0.5);
+}
+
+#continue-btn:active,
+#back-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 10px rgba(255, 111, 97, 0.5);
+}
+
+@keyframes popUp {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+  80% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* Nút điều khiển */
+.controls {
+  position: absolute;
+  bottom: 15px; /* Giảm khoảng cách từ dưới */
+  left: 15px; /* Giảm khoảng cách từ trái */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px; /* Giảm khoảng cách giữa các nút */
+  z-index: 10;
+}
+
+.horizontal-btns {
+  display: flex;
+  flex-direction: row;
+  gap: 10px; /* Giảm khoảng cách */
+}
+
+.control-btn {
+  width: 50px; /* Giảm kích thước nút */
+  height: 50px;
+  background: linear-gradient(145deg, #9370db, #6a0dad);
+  border: 2px solid #b19cd9; /* Viền mỏng hơn */
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.5em; /* Giảm kích thước chữ */
+  font-family: "Arial", sans-serif;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(147, 112, 219, 0.6), inset 0 2px 5px rgba(255, 255, 255, 0.4), inset 0 -2px 5px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  background-image: url("https://www.transparenttextures.com/patterns/subtle-white-feathers.png");
+  background-size: cover;
+}
+
+.control-btn:hover {
+  background: linear-gradient(145deg, #6a0dad, #4b0082);
+  box-shadow: 0 8px 20px rgba(147, 112, 219, 0.9), inset 0 2px 5px rgba(255, 255, 255, 0.5), inset 0 -2px 5px rgba(0, 0, 0, 0.6);
+  transform: translateY(-3px);
+}
+
+.control-btn:active {
+  transform: scale(0.92) translateY(2px);
+  box-shadow: 0 3px 8px rgba(147, 112, 219, 0.4), inset 0 1px 3px rgba(0, 0, 0, 0.7);
+  background: linear-gradient(145deg, #4b0082, #2e0047);
+}
+
+/* Final Surprise */
+.final-surprise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom, #2c1b47, #0d051a);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.final-surprise.hidden {
+  display: none;
+}
+
+.fireworks {
+  display: none;
+}
+
+#final-text {
+  font-size: 4em; /* Giảm kích thước chữ */
+  color: #ff6f61;
+  text-shadow: 0 0 20px #fff, 0 0 40px #ff6f61, 0 0 60px #ffb6c1;
+  animation: heartBeat 1s infinite, glow 2s infinite alternate;
+  letter-spacing: 1px;
+}
+
+#final-message {
+  font-size: 1.2em; /* Giảm kích thước chữ */
+  color: #fff;
+  margin: 10px 20px; /* Giảm margin */
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  line-height: 1.4;
+  max-width: 85%;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 15px; /* Giảm padding */
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  font-family: "Montserrat", sans-serif;
+}
+
+#yes-btn,
+#think-btn {
+  padding: 10px 30px; /* Giảm kích thước nút */
+  margin: 10px; /* Giảm margin */
+  background: linear-gradient(145deg, #ff6f61, #e63946);
+  border: 2px solid #ffb6c1; /* Viền mỏng hơn */
+  border-radius: 15px;
+  font-size: 1em; /* Giảm kích thước chữ */
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(255, 111, 97, 0.7), inset 0 1px 3px rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+#yes-btn:hover,
+#think-btn:hover {
+  transform: scale(1.1) translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 111, 97, 1);
+}
+
+#yes-btn:active,
+#think-btn:active {
+  transform: scale(1);
+  box-shadow: 0 3px 10px rgba(255, 111, 97, 0.5);
+}
+
+@keyframes glow {
+  0% { text-shadow: 0 0 20px #fff, 0 0 40px #ff6f61, 0 0 60px #ffb6c1; }
+  100% { text-shadow: 0 0 30px #fff, 0 0 50px #ff6f61, 0 0 80px #ffb6c1; }
+}
+
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Media query cho mobile */
+@media (max-width: 768px) {
+  .chat-box {
+    width: 35vw;
+    max-width: 200px;
+  }
+  .chat-header img {
+    width: 25px;
+    height: 25px;
+  }
+  #narrator-name,
+  #path-narrator-name {
+    font-size: 0.9em;
+  }
+  .chat-message {
+    top: 35px;
+    left: 35px;
+  }
+  #chat-text {
+    font-size: 0.8em;
+  }
+  .path-message-box {
+    padding: 15px 20px;
+  }
+  .message-header img {
+    width: 30px;
+    height: 30px;
+  }
+  #path-narrator-name {
+    font-size: 1em;
+  }
+  #path-message-text {
+    font-size: 1em;
+  }
+  #continue-btn,
+  #back-btn {
+    padding: 8px 20px;
+    font-size: 0.9em;
+  }
+  .controls {
+    bottom: 10px;
+    left: 10px;
+    gap: 3px;
+  }
+  .control-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2em;
+  }
+  .horizontal-btns {
+    gap: 8px;
+  }
+  #final-text {
+    font-size: 3em;
+  }
+  #final-message {
+    font-size: 1em;
+  }
+  #yes-btn,
+  #think-btn {
+    padding: 8px 20px;
+    font-size: 0.9em;
+  }
+}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.926);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.7);
+}

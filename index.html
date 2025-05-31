@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="login.css">
+    <title>LOGIN - PHÚ TÀI</title>
+</head>
+
+<body>
+
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+           <form onsubmit="return false;">
+    <h1>Tạo Tài Khoản</h1>
+    <span>Vui Lòng Liên Hệ Admin Để Cấp Tài Khoản</span>
+    <button id="discordBtn">Discord</button>
+           </form>
+        </div>
+        <div class="form-container sign-in">
+            <form>
+                <h1>Đăng Nhập</h1>
+                <span>Hãy Sử Dụng Tài Khoản Của Bạn Do Admin Tạo</span>
+                <input type="email" placeholder="name@member.com">
+                <input type="password" placeholder="KeyPass">
+                <a href="#">Quên Tài Khoản?</a>
+                <button>Đăng Nhập</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Xin Chào,</h1>
+                    <p>Nếu Bạn Đã Có Tài Khoản Hãy Đăng Nhập Nhé.</p>
+                    <button class="hidden" id="login">Đăng Nhập</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Xin Chào !</h1>
+                    <p>Nếu Bạn Chưa Có Tài Khoản Hãy Đăng Ký Tài Khoản Trước Nhé.</p>
+                    <button class="hidden" id="register">Đăng Ký</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="test.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>
