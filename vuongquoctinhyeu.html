@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://img.upanh.tv/2025/05/20/f5a31b8b43609b08ec71c269a0086fe8.jpg"/>
+    <title>Vương Quốc Tình Yêu</title>
+    <link rel="stylesheet" href="vuongquoctinhyeu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+	<!-- Nhạc nền -->
+<audio id="bg-music" loop>
+  <source src="https://files.catbox.moe/hidqrh.mp3" type="audio/mp3">
+</audio>
+
+<!-- Nút bật/tắt nhạc -->
+<button id="music-toggle" class="music-toggle">
+  <i class="fa-solid fa-volume-high"></i>
+</button>
+
+    <!-- Overlay thông báo -->
+    <div id="rotate-overlay" class="rotate-overlay hidden">
+        <div class="rotate-message">
+            <h1>Xoay màn hình hoặc dùng PC nhé!</h1>
+            <p>Trò chơi này chỉ hỗ trợ trên PC hoặc chế độ ngang (landscape) trên điện thoại. Hãy xoay màn hình để tiếp tục!</p>
+        </div>
+    </div>
+    <div id="start-screen" class="start-screen">
+  <h1>Vương Quốc Tình Yêu</h1>
+  <button id="start-btn">Bắt Đầu</button>
+</div>
+
+    <div id="scene-container" class="scene-container">
+        <!-- Canvas cho đồ họa -->
+        <canvas id="canvas"></canvas>
+
+        <!-- Bảng nói chuyện (góc trái) -->
+        <div id="chat-box" class="chat-box">
+            <div class="chat-header">
+                <img id="narrator-img"
+                    src="https://img.upanh.tv/2025/05/20/f5a31b8b43609b08ec71c269a0086fe8.jpg"
+                    alt="Narrator">
+                <p id="narrator-name">Hiệp Sĩ</p>
+            </div>
+            <div id="chat-message" class="chat-message">
+                <p id="chat-text"></p>
+            </div>
+        </div>
+
+        <!-- Bảng thông báo khi vào con đường -->
+        <div id="path-message-box" class="path-message-box hidden">
+            <div class="message-header">
+                <img id="path-narrator-img"
+                    src="https://img.upanh.tv/2025/05/20/f5a31b8b43609b08ec71c269a0086fe8.jpg"
+                    alt="Narrator">
+                <p id="path-narrator-name">Hiệp Sĩ Lãng Mạn</p>
+            </div>
+            <p id="path-message-text"></p>
+            <div class="message-buttons">
+                <button id="continue-btn">Tiếp Tục</button>
+                <button id="back-btn">Quay Lại</button>
+            </div>
+        </div>
+
+        <!-- Nút điều khiển -->
+        <div id="controls" class="controls">
+    <button id="up-btn" class="control-btn"><i class="fa-solid fa-arrow-up"></i></button>
+    <div class="horizontal-btns">
+        <button id="left-btn" class="control-btn"><i class="fa-solid fa-arrow-left"></i></button>
+        <button id="right-btn" class="control-btn"><i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+    <button id="down-btn" class="control-btn"><i class="fa-solid fa-arrow-down"></i></button>
+</div>
+
+    <div id="final-surprise" class="final-surprise hidden">
+        <div class="fireworks"></div>
+        <h1 id="final-text">I Love You!</h1>
+        <p id="final-message">Em có muốn cùng anh đi tiếp hành trình này không?</p>
+        <button id="yes-btn">Có, em cũng thích anh!</button>
+        <button id="think-btn">Để em suy nghĩ...</button>
+    </div>
+
+    <script src="vuongquoctinhyeu.js"></script>
+</body>
+
+</html>
